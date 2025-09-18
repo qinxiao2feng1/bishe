@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}统计信息 - 校园失物招领平台{% endblock %}
+
+{% block content %}
+<div class="page-title">
+    <h2>统计信息</h2>
+    <p>查看平台数据统计，了解失物招领情况 📊</p>
+</div>
+
+<!-- 总体统计 -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color: #721c24; border: none;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔍</div>
+        <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">{{ total_lost }}</h3>
+        <p style="font-size: 1.1rem; font-weight: 500;">遗失物品</p>
+    </div>
+    
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #155724; border: none;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">📦</div>
+        <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">{{ total_found }}</h3>
+        <p style="font-size: 1.1rem; font-weight: 500;">拾到物品</p>
+    </div>
+    
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">📈</div>
+        <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">{{ total_lost + total_found }}</h3>
+        <p style="font-size: 1.1rem; font-weight: 500;">总计信息</p>
+    </div>
+    
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #8b4513; border: none;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎯</div>
+        <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">
+            {% if total_lost > 0 %}{{ "%.1f"|format((total_found / (total_lost + total_found) * 100)) }}%{% else %}0%{% endif %}
+        </h3>
+        <p style="font-size: 1.1rem; font-weight: 500;">找回率</p>
+    </div>
+</div>
+
+<!-- 类别统计 -->
+<div class="card">
+    <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">📊 物品类别统计</h3>
+    
+    <div style="display: grid; gap: 1rem;">
+        {% for category in lost_stats.keys() %}
+        {% set lost_count = lost_stats[category] %}
+        {% set found_count = found_stats[category] %}
+        {% if lost_count > 0 or found_count > 0 %}
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="font-size: 2rem;">
+                        {% if category == '钱包' %}💰
+                        {% elif category == '钥匙' %}🔑
+                        {% elif category == '书籍' %}📚
+                        {% elif category == '电子产品' %}📱
+                        {% else %}📦{% endif %}
+                    </div>
+                    <h4 style="color: #2c3e50;">{{ category }}</h4>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;">
+                        {{ lost_count + found_count }} 件
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="text-align: center; padding: 1rem; background: rgba(255, 154, 158, 0.1); border-radius: 8px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #dc3545; margin-bottom: 0.5rem;">
+                        {{ lost_count }}
+                    </div>
+                    <div style="color: #666;">遗失</div>
+                </div>
+                <div style="text-align: center; padding: 1rem; background: rgba(132, 250, 176, 0.1); border-radius: 8px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #28a745; margin-bottom: 0.5rem;">
+                        {{ found_count }}
+                    </div>
+                    <div style="color: #666;">拾到</div>
+                </div>
+            </div>
+            
+            <!-- 进度条 -->
+            <div style="margin-top: 1rem;">
+                <div style="background: #e9ecef; height: 8px; border-radius: 4px; overflow: hidden;">
+                    {% set total = lost_count + found_count %}
+                    <div style="height: 100%; background: linear-gradient(90deg, #ff6b6b {{ (lost_count/total*100)|round(1) }}%, #51cf66 {{ (lost_count/total*100)|round(1) }}%);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                    <span>遗失 {{ (lost_count/total*100)|round(1) }}%</span>
+                    <span>拾到 {{ (found_count/total*100)|round(1) }}%</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 地点统计 -->
+{% if location_stats %}
+<div class="card">
+    <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">📍 热门地点统计</h3>
+    
+    <div style="display: grid; gap: 1rem;">
+        {% for location, stats in location_stats.items() %}
+        {% set total_items = stats.lost + stats.found %}
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="background: #667eea; color: white; width: 50px; height: 50px; 
+                                border-radius: 50%; display: flex; align-items: center; 
+                                justify-content: center; font-size: 1.2rem;">📍</div>
+                    <h4 style="color: #2c3e50;">{{ location }}</h4>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;">
+                        {{ total_items }} 件
+                    </div>
+                    <div style="font-size: 0.9rem; color: #666;">
+                        失物信息
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; 
+                            padding: 0.8rem; background: rgba(255, 154, 158, 0.1); border-radius: 8px;">
+                    <div>
+                        <div style="color: #dc3545; font-weight: bold;">🔍 遗失</div>
+                    </div>
+                    <div style="font-size: 1.3rem; font-weight: bold; color: #dc3545;">
+                        {{ stats.lost }}
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; 
+                            padding: 0.8rem; background: rgba(132, 250, 176, 0.1); border-radius: 8px;">
+                    <div>
+                        <div style="color: #28a745; font-weight: bold;">📦 拾到</div>
+                    </div>
+                    <div style="font-size: 1.3rem; font-weight: bold; color: #28a745;">
+                        {{ stats.found }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 热度指示器 -->
+            <div style="margin-top: 1rem; text-align: center;">
+                {% if total_items >= 5 %}
+                    <span style="background: #ff4757; color: white; padding: 4px 12px; border-radius: 15px; font-size: 0.8rem;">
+                        🔥 热门地点
+                    </span>
+                {% elif total_items >= 3 %}
+                    <span style="background: #ffa502; color: white; padding: 4px 12px; border-radius: 15px; font-size: 0.8rem;">
+                        ⚡ 活跃地点
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- 温馨提示 -->
+<div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+    <h3 style="margin-bottom: 1rem;">💡 温馨提示</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📞</div>
+            <h4 style="margin-bottom: 0.5rem;">及时沟通</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9;">
+                留下有效联系方式，便于失主和拾获者及时取得联系
+            </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
+            <h4 style="margin-bottom: 0.5rem;">传递温暖</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9;">
+                每一次的拾金不昧都是对校园文明的贡献，感谢您的善举
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 快速操作 -->
+<div style="text-align: center; padding: 2rem 0;">
+    <h3 style="color: #2c3e50; margin-bottom: 1rem;">快速操作</h3>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/register" class="btn">登记失物信息</a>
+        <a href="/search" class="btn btn-secondary">搜索查询</a>
+    </div>
+</div>
+
+<script>
+    // 添加一些动态效果
+    document.addEventListener('DOMContentLoaded', function() {
+        // 为统计数字添加计数动画
+        const numbers = document.querySelectorAll('[style*="font-size: 2rem"]');
+        numbers.forEach(num => {
+            const finalValue = parseInt(num.textContent);
+            if (!isNaN(finalValue) && finalValue > 0) {
+                let currentValue = 0;
+                const increment = Math.ceil(finalValue / 30);
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        currentValue = finalValue;
+                        clearInterval(timer);
+                    }
+                    num.textContent = currentValue;
+                }, 50);
+            }
+        });
+        
+        // 为进度条添加动画
+        const progressBars = document.querySelectorAll('[style*="background: linear-gradient(90deg"]');
+        progressBars.forEach(bar => {
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 1s ease-in-out';
+                bar.style.width = '100%';
+            }, 500);
+        });
+    });
+</script>
+{% endblock %}5rem;">🎯</div>
+            <h4 style="margin-bottom: 0.5rem;">提高找回率</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9;">
+                详细描述物品特征和准确填写地点信息有助于提高失物找回成功率
+            </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px;">
+            <div style="font-size: 2rem; margin-bottom: 0.

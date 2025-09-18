@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}校园失物招领平台 - 首页{% endblock %}
+
+{% block content %}
+<div class="page-title">
+    <h2>欢迎使用校园失物招领平台</h2>
+    <p>让每一件遗失的物品都能找到回家的路 🏠</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+    <div class="card">
+        <div style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+            <h3 style="color: #667eea; margin-bottom: 1rem;">信息登记</h3>
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                快速登记您的遗失物品或拾到物品信息，帮助物品尽快找到主人。
+            </p>
+            <a href="/register" class="btn">立即登记</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+            <h3 style="color: #667eea; margin-bottom: 1rem;">搜索查询</h3>
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                通过关键词、类别等条件快速查找您的遗失物品或查看拾到物品。
+            </p>
+            <a href="/search" class="btn">开始搜索</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+            <h3 style="color: #667eea; margin-bottom: 1rem;">统计信息</h3>
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                查看平台统计数据，了解失物招领情况和热门地点。
+            </p>
+            <a href="/statistics" class="btn">查看统计</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">平台特色功能</h3>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <div style="text-align: center; padding: 1rem;">
+            <div style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+                        width: 60px; height: 60px; border-radius: 50%;
+                        display: flex; align-items: center; justify-content: center;
+                        margin: 0 auto 1rem; font-size: 1.5rem;">🎯</div>
+            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">精准匹配</h4>
+            <p style="color: #666; font-size: 0.9rem;">基于物品类别和地点的智能匹配</p>
+        </div>
+
+        <div style="text-align: center; padding: 1rem;">
+            <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+                        width: 60px; height: 60px; border-radius: 50%;
+                        display: flex; align-items: center; justify-content: center;
+                        margin: 0 auto 1rem; font-size: 1.5rem;">⚡</div>
+            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">快速便捷</h4>
+            <p style="color: #666; font-size: 0.9rem;">简洁界面，一键操作，省时省力</p>
+        </div>
+
+        <div style="text-align: center; padding: 1rem;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        width: 60px; height: 60px; border-radius: 50%;
+                        display: flex; align-items: center; justify-content: center;
+                        margin: 0 auto 1rem; font-size: 1.5rem;">🏫</div>
+            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">校园专属</h4>
+            <p style="color: #666; font-size: 0.9rem;">专为校园环境设计的失物招领平台</p>
+        </div>
+
+        <div style="text-align: center; padding: 1rem;">
+            <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+                        width: 60px; height: 60px; border-radius: 50%;
+                        display: flex; align-items: center; justify-content: center;
+                        margin: 0 auto 1rem; font-size: 1.5rem;">🔒</div>
+            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">安全可靠</h4>
+            <p style="color: #666; font-size: 0.9rem;">保护用户隐私，确保信息安全</p>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+    <h3 style="margin-bottom: 1rem;">使用流程</h3>
+    <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div style="flex: 1; min-width: 200px;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">1️⃣</div>
+            <h4>登记信息</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9;">填写详细的物品信息</p>
+        </div>
+        <div style="font-size: 2rem; opacity: 0.5;">→</div>
+        <div style="flex: 1; min-width: 200px;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">2️⃣</div>
+            <h4>搜索匹配</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9;">系统自动匹配相关信息</p>
+        </div>
+        <div style="font-size: 2rem; opacity: 0.5;">→</div>
+        <div style="flex: 1; min-width: 200px;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">3️⃣</div>
+            <h4>联系取回</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9;">通过联系方式完成交接</p>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; padding: 2rem 0;">
+    <h3 style="color: #2c3e50; margin-bottom: 1rem;">开始使用平台</h3>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/register" class="btn">我要登记失物</a>
+        <a href="/search" class="btn btn-secondary">我要查找失物</a>
+    </div>
+</div>
+{% endblock %}

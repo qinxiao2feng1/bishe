@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}搜索查询 - 校园失物招领平台{% endblock %}
+
+{% block content %}
+<div class="page-title">
+    <h2>搜索查询</h2>
+    <p>通过关键词和筛选条件快速找到您的失物 🔍</p>
+</div>
+
+<!-- 搜索表单 -->
+<div class="card">
+    <form method="GET" action="/search" style="display: grid; gap: 1rem;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="keyword">关键词搜索</label>
+                <input type="text" id="keyword" name="keyword" class="form-control" 
+                       value="{{ current_keyword }}" 
+                       placeholder="输入物品名称、地点或描述关键词">
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="category">物品类别</label>
+                <select id="category" name="category" class="form-control">
+                    <option value="">全部类别</option>
+                    {% for category in categories %}
+                        <option value="{{ category }}" 
+                                {% if current_category == category %}selected{% endif %}>
+                            {{ category }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="type">信息类型</label>
+                <select id="type" name="type" class="form-control">
+                    <option value="all" {% if current_type == 'all' %}selected{% endif %}>全部信息</option>
+                    <option value="lost" {% if current_type == 'lost' %}selected{% endif %}>遗失物品</option>
+                    <option value="found" {% if current_type == 'found' %}selected{% endif %}>拾到物品</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn" style="padding: 12px 24px;">
+                🔍 搜索
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- 搜索结果统计 -->
+{% if current_keyword or current_category or current_type != 'all' %}
+<div style="margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <strong>搜索结果：</strong>
+            {% if current_keyword %}关键词"{{ current_keyword }}" • {% endif %}
+            {% if current_category %}类别"{{ current_category }}" • {% endif %}
+            {% if current_type != 'all' %}类型"{{ '遗失物品' if current_type == 'lost' else '拾到物品' }}" • {% endif %}
+            共找到 <span style="color: #667eea; font-weight: bold;">{{ total_count }}</span> 条记录
+        </div>
+        <a href="/search" class="btn" style="padding: 8px 16px; font-size: 14px;">
+            清空条件
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- 搜索结果 -->
+{% if items %}
+<div style="display: grid; gap: 1rem;">
+    {% for item in items %}
+    <div class="card" style="position: relative;">
+        <div style="position: absolute; top: 1rem; right: 1rem;">
+            <span class="badge badge-{{ item.type_class }}" 
+                  style="padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: bold;
+                         {% if item.type_class == 'lost' %}
+                             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color: #721c24;
+                         {% else %}
+                             background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #155724;
+                         {% endif %}">
+                {{ item.type }}
+            </span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 2rem; align-items: start;">
+            <div style="text-align: center; min-width: 80px;">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">
+                    {% if item.category == '钱包' %}💰
+                    {% elif item.category == '钥匙' %}🔑
+                    {% elif item.category == '书籍' %}📚
+                    {% elif item.category == '电子产品' %}📱
+                    {% else %}📦{% endif %}
+                </div>
+                <div style="background: #f8f9fa; padding: 4px 8px; border-radius: 5px; font-size: 12px; color: #666;">
+                    {{ item.category }}
+                </div>
+            </div>
+            
+            <div>
+                <h3 style="color: #2c3e50; margin-bottom: 1rem; font-size: 1.5rem;">
+                    {{ item.name }}
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: #667eea;">📍</span>
+                        <strong>地点：</strong>{{ item.place }}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: #667eea;">📅</span>
+                        <strong>日期：</strong>{{ item.date }}
+                    </div>
+                    {% if item.contact %}
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: #667eea;">📞</span>
+                        <strong>联系：</strong>{{ item.contact }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if item.description %}
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong style="color: #2c3e50;">详细描述：</strong><br>
+                    <span style="color: #555;">{{ item.description }}</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div style="text-align: right; min-width: 120px;">
+                <div style="color: #999; font-size: 0.9rem; margin-bottom: 1rem;">
+                    登记时间<br>{{ item.created_at }}
+                </div>
+                {% if item.contact %}
+                <button onclick="showContact('{{ item.contact }}')" class="btn" style="padding: 8px 16px; font-size: 14px;">
+                    联系{{ '失主' if item.type_class == 'found' else '拾获者' }}
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- 分页提示 -->
+{% if items|length >= 20 %}
+<div style="text-align: center; margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+    <p style="color: #666;">显示了最新的 {{ items|length }} 条记录</p>
+</div>
+{% endif %}
+
+{% else %}
+<!-- 无搜索结果 -->
+<div class="card" style="text-align: center; padding: 3rem;">
+    <div style="font-size: 5rem; margin-bottom: 1rem; opacity: 0.5;">🔍</div>
+    <h3 style="color: #666; margin-bottom: 1rem;">未找到相关失物信息</h3>
+    <p style="color: #999; margin-bottom: 2rem;">
+        {% if current_keyword or current_category or current_type != 'all' %}
+            请尝试修改搜索条件或查看全部信息
+        {% else %}
+            当前还没有失物信息，您可以先登记您的失物
+        {% endif %}
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        {% if current_keyword or current_category or current_type != 'all' %}
+        <a href="/search" class="btn">查看全部信息</a>
+        {% endif %}
+        <a href="/register" class="btn btn-secondary">登记失物信息</a>
+    </div>
+</div>
+{% endif %}
+
+<!-- 快速操作 -->
+<div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; margin-top: 2rem;">
+    <h3 style="margin-bottom: 1rem;">没找到想要的结果？</h3>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/register" class="btn" style="background: rgba(255,255,255,0.2); color: white;">
+            登记新的失物信息
+        </a>
+        <a href="/contact" class="btn" style="background: rgba(255,255,255,0.2); color: white;">
+            联系管理员求助
+        </a>
+    </div>
+</div>
+
+<!-- 联系信息模态框 -->
+<div id="contactModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                                background: rgba(0,0,0,0.5); z-index: 1000;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                background: white; padding: 2rem; border-radius: 15px; max-width: 400px; width: 90%;">
+        <h3 style="color: #2c3e50; margin-bottom: 1rem; text-align: center;">联系方式</h3>
+        <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; text-align: center; margin-bottom: 1.5rem;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📞</div>
+            <p id="contactInfo" style="font-size: 1.1rem; font-weight: bold; color: #667eea;"></p>
+        </div>
+        <div style="text-align: center;">
+            <button onclick="closeContact()" class="btn">关闭</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showContact(contact) {
+        document.getElementById('contactInfo').textContent = contact;
+        document.getElementById('contactModal').style.display = 'block';
+    }
+    
+    function closeContact() {
+        document.getElementById('contactModal').style.display = 'none';
+    }
+    
+    // 点击模态框背景关闭
+    document.getElementById('contactModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeContact();
+        }
+    });
+    
+    // ESC键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeContact();
+        }
+    });
+</script>
+{% endblock %}

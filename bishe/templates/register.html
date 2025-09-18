@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}信息登记 - 校园失物招领平台{% endblock %}
+
+{% block content %}
+<div class="page-title">
+    <h2>信息登记</h2>
+    <p>请详细填写物品信息，帮助更快找到失主或失物 📝</p>
+</div>
+
+<div style="max-width: 800px; margin: 0 auto;">
+    <div class="card">
+        <form method="POST" action="/register">
+            <!-- 物品类型选择 -->
+            <div class="form-group">
+                <label>物品状态 *</label>
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;
+                                  padding: 12px 20px; border: 2px solid #e3e8f0;
+                                  border-radius: 10px; transition: all 0.3s ease;">
+                        <input type="radio" name="item_type" value="lost" required
+                               style="margin-right: 8px;" onchange="updateFormTitle()">
+                        <span style="font-weight: 500;">🔍 我遗失了物品</span>
+                    </label>
+                    <label style="display: flex; align-items: center; cursor: pointer;
+                                  padding: 12px 20px; border: 2px solid #e3e8f0;
+                                  border-radius: 10px; transition: all 0.3s ease;">
+                        <input type="radio" name="item_type" value="found" required
+                               style="margin-right: 8px;" onchange="updateFormTitle()">
+                        <span style="font-weight: 500;">📦 我拾到了物品</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="form-title" style="text-align: center; margin: 2rem 0;
+                                        padding: 1rem; background: #f8f9fa;
+                                        border-radius: 10px; display: none;">
+                <h3 id="title-text" style="color: #667eea;"></h3>
+            </div>
+
+            <!-- 物品信息 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="name">物品名称 *</label>
+                    <input type="text" id="name" name="name" class="form-control"
+                           placeholder="例如：黑色钱包、iPhone手机" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">物品类别 *</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="">请选择类别</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="place">地点 *</label>
+                    <select id="place" name="place" class="form-control" required>
+                        <option value="">请选择地点</option>
+                        {% for location in locations %}
+                            <option value="{{ location }}">{{ location }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date" id="date-label">日期 *</label>
+                    <input type="date" id="date" name="date" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contact">联系方式</label>
+                <input type="text" id="contact" name="contact" class="form-control"
+                       placeholder="例如：微信号、QQ号、电话号码（建议填写以便联系）">
+            </div>
+
+            <div class="form-group">
+                <label for="description">详细描述</label>
+                <textarea id="description" name="description" class="form-control"
+                          rows="4" placeholder="请详细描述物品的外观特征、颜色、大小等信息"></textarea>
+            </div>
+
+            <div style="text-align: center; padding: 1rem 0;">
+                <button type="submit" class="btn" style="padding: 15px 40px; font-size: 16px;">
+                    <span id="submit-text">提交信息</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 温馨提示 -->
+    <div class="card" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); border: none;">
+        <h3 style="color: #2c3e50; margin-bottom: 1rem; text-align: center;">📌 温馨提示</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 10px;">
+                <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">🔍 遗失物品</h4>
+                <p style="color: #555; font-size: 0.9rem;">
+                    请尽可能详细地描述物品特征，包括颜色、品牌、特殊标记等，这将大大提高找回的可能性。
+                </p>
+            </div>
+            <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 10px;">
+                <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">📦 拾到物品</h4>
+                <p style="color: #555; font-size: 0.9rem;">
+                    请如实填写拾到物品的信息，并妥善保管物品，等待失主联系。您的善举将温暖他人的心。
+                </p>
+            </div>
+            <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 10px;">
+                <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">📞 联系方式</h4>
+                <p style="color: #555; font-size: 0.9rem;">
+                    建议留下微信号或QQ号等联系方式，方便双方沟通。我们会保护您的隐私安全。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 设置默认日期为今天
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+        document.getElementById('date').max = today;
+    });
+
+    // 更新表单标题和标签
+    function updateFormTitle() {
+        const itemType = document.querySelector('input[name="item_type"]:checked').value;
+        const formTitle = document.getElementById('form-title');
+        const titleText = document.getElementById('title-text');
+        const submitText = document.getElementById('submit-text');
+        const dateLabel = document.getElementById('date-label');
+
+        formTitle.style.display = 'block';
+
+        if (itemType === 'lost') {
+            titleText.textContent = '🔍 遗失物品信息登记';
+            submitText.textContent = '提交遗失信息';
+            dateLabel.textContent = '遗失日期 *';
+        } else {
+            titleText.textContent = '📦 拾到物品信息登记';
+            submitText.textContent = '提交拾获信息';
+            dateLabel.textContent = '拾到日期 *';
+        }
+    }
+
+    // 表单验证增强
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const requiredFields = ['item_type', 'name', 'category', 'place', 'date'];
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            const input = document.querySelector(`[name="${field}"]`);
+            if (field === 'item_type') {
+                if (!document.querySelector('input[name="item_type"]:checked')) {
+                    isValid = false;
+                    alert('请选择物品状态（遗失或拾到）');
+                }
+            } else if (!input.value.trim()) {
+                isValid = false;
+                input.style.borderColor = '#dc3545';
+                input.addEventListener('input', function() {
+                    this.style.borderColor = '#e3e8f0';
+                });
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // 添加单选按钮样式交互
+    document.querySelectorAll('input[name="item_type"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('label').forEach(label => {
+                if (label.querySelector('input[name="item_type"]')) {
+                    if (label.querySelector('input').checked) {
+                        label.style.borderColor = '#667eea';
+                        label.style.backgroundColor = 'rgba(102, 126, 234, 0.1)';
+                    } else {
+                        label.style.borderColor = '#e3e8f0';
+                        label.style.backgroundColor = 'transparent';
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

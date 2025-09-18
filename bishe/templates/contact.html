@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}联系我们 - 校园失物招领平台{% endblock %}
+
+{% block content %}
+<div class="page-title">
+    <h2>联系我们</h2>
+    <p>需要帮助或有任何建议？我们随时为您服务 📞</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+    <!-- 联系方式 -->
+    <div class="card">
+        <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">📞 联系方式</h3>
+        
+        <div style="display: grid; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; 
+                        background: #f8f9fa; border-radius: 10px;">
+                <div style="background: #667eea; color: white; width: 50px; height: 50px; 
+                            border-radius: 50%; display: flex; align-items: center; 
+                            justify-content: center; font-size: 1.2rem;">📱</div>
+                <div>
+                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">服务热线</h4>
+                    <p style="color: #667eea; font-weight: bold;">010-1234-5678</p>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; 
+                        background: #f8f9fa; border-radius: 10px;">
+                <div style="background: #28a745; color: white; width: 50px; height: 50px; 
+                            border-radius: 50%; display: flex; align-items: center; 
+                            justify-content: center; font-size: 1.2rem;">💬</div>
+                <div>
+                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">微信客服</h4>
+                    <p style="color: #28a745; font-weight: bold;">campus-help</p>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; 
+                        background: #f8f9fa; border-radius: 10px;">
+                <div style="background: #17a2b8; color: white; width: 50px; height: 50px; 
+                            border-radius: 50%; display: flex; align-items: center; 
+                            justify-content: center; font-size: 1.2rem;">📧</div>
+                <div>
+                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">邮箱地址</h4>
+                    <p style="color: #17a2b8; font-weight: bold;">help@campus-lost.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 服务时间 -->
+    <div class="card">
+        <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">🕒 服务时间</h3>
+        
+        <div style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); 
+                    padding: 2rem; border-radius: 15px; text-align: center; color: #155724;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">⏰</div>
+            <h4 style="margin-bottom: 1rem;">24小时在线服务</h4>
+            <div style="background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                <p style="margin-bottom: 0.5rem;"><strong>工作日：</strong>8:00 - 22:00</p>
+                <p style="margin-bottom: 0.5rem;"><strong>周末：</strong>9:00 - 18:00</p>
+                <p><strong>紧急情况：</strong>24小时响应</p>
+            </div>
+            <p style="font-size: 0.9rem; opacity: 0.8;">我们承诺在收到您的消息后30分钟内回复</p>
+        </div>
+    </div>
+</div>
+
+<!-- 常见问题 -->
+<div class="card">
+    <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">❓ 常见问题</h3>
+    
+    <div style="display: grid; gap: 1rem;">
+        <div style="border: 1px solid #e3e8f0; border-radius: 10px; overflow: hidden;">
+            <div style="background: #f8f9fa; padding: 1rem; cursor: pointer;" onclick="toggleFAQ(1)">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="color: #2c3e50;">如何提高失物找回的成功率？</h4>
+                    <span id="faq-icon-1" style="color: #667eea; font-size: 1.2rem;">+</span>
+                </div>
+            </div>
+            <div id="faq-content-1" style="display: none; padding: 1rem; background: white;">
+                <p style="color: #555; line-height: 1.6;">
+                    1. <strong>详细描述：</strong>尽可能详细地描述物品的外观、颜色、品牌、特殊标记等<br>
+                    2. <strong>准确地点：</strong>准确填写丢失或拾到的具体地点<br>
+                    3. <strong>及时登记：</strong>发现遗失或拾到物品后尽快在平台上登记<br>
+                    4. <strong>留下联系方式：</strong>方便对方联系您进行物品交接
+                </p>
+            </div>
+        </div>
+        
+        <div style="border: 1px solid #e3e8f0; border-radius: 10px; overflow: hidden;">
+            <div style="background: #f8f9fa; padding: 1rem; cursor: pointer;" onclick="toggleFAQ(2)">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="color: #2c3e50;">拾到物品后应该如何处理？</h4>
+                    <span id="faq-icon-2" style="color: #667eea; font-size: 1.2rem;">+</span>
+                </div>
+            </div>
+            <div id="faq-content-2" style="display: none; padding: 1rem; background: white;">
+                <p style="color: #555; line-height: 1.6;">
+                    1. <strong>妥善保管：</strong>将拾到的物品妥善保管，避免损坏<br>
+                    2. <strong>及时登记：</strong>在平台上登记拾到物品的信息<br>
+                    3. <strong>等待联系：</strong>等待失主通过平台联系您<br>
+                    4. <strong>安全交接：</strong>建议在公共场所进行物品交接，确保双方安全
+                </p>
+            </div>
+        </div>
+        
+        <div style="border: 1px solid #e3e8f0; border-radius: 10px; overflow: hidden;">
+            <div style="background: #f8f9fa; padding: 1rem; cursor: pointer;" onclick="toggleFAQ(3)">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="color: #2c3e50;">如何确认物品的真正失主？</h4>
+                    <span id="faq-icon-3" style="color: #667eea; font-size: 1.2rem;">+</span>
+                </div>
+            </div>
+            <div id="faq-content-3" style="display: none; padding: 1rem; background: white;">
+                <p style="color: #555; line-height: 1.6;">
+                    1. <strong>核对信息：</strong>让对方详细描述物品特征、丢失时间和地点<br>
+                    2. <strong>查看证明：</strong>如果物品有特殊标识，可要求对方提供相关证明<br>
+                    3. <strong>谨慎交接：</strong>如有疑虑，可联系学校保卫处协助确认<br>
+                    4. <strong>保留记录：</strong>建议保留交接过程的相关记录
+                </p>
+            </div>
+        </div>
+        
+        <div style="border: 1px solid #e3e8f0; border-radius: 10px; overflow: hidden;">
+            <div style="background: #f8f9fa; padding: 1rem; cursor: pointer;" onclick="toggleFAQ(4)">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="color: #2c3e50;">平台是否收取任何费用？</h4>
+                    <span id="faq-icon-4" style="color: #667eea; font-size: 1.2rem;">+</span>
+                </div>
+            </div>
+            <div id="faq-content-4" style="display: none; padding: 1rem; background: white;">
+                <p style="color: #555; line-height: 1.6;">
+                    本平台完全免费使用，我们不收取任何费用。我们的目标是为校园师生提供便捷的失物招领服务，
+                    传递正能量，营造和谐的校园环境。所有功能包括信息登记、搜索查询等都是免费的。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 意见反馈 -->
+<div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <h3 style="margin-bottom: 1.5rem; text-align: center;">💡 意见反馈</h3>
+    <div style="text-align: center;">
+        <p style="margin-bottom: 2rem; font-size: 1.1rem; opacity: 0.9;">
+            您的意见和建议是我们改进服务的动力，欢迎随时与我们联系
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐛</div>
+                <h4 style="margin-bottom: 0.5rem;">Bug反馈</h4>
+                <p style="font-size: 0.9rem; opacity: 0.8;">发现系统问题？立即告诉我们</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💡</div>
+                <h4 style="margin-bottom: 0.5rem;">功能建议</h4>
+                <p style="font-size: 0.9rem; opacity: 0.8;">有好的想法？与我们分享</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                <h4 style="margin-bottom: 0.5rem;">服务评价</h4>
+                <p style="font-size: 0.9rem; opacity: 0.8;">对我们的服务进行评价</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <a href="mailto:help@campus-lost.com" class="btn" 
+               style="background: rgba(255,255,255,0.2); color: white; padding: 12px 30px;">
+                📧 发送邮件反馈
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 团队介绍 -->
+<div class="card">
+    <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">👥 关于我们</h3>
+    <div style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎓</div>
+        <h4 style="color: #667eea; margin-bottom: 1rem;">校园失物招领平台开发团队</h4>
+        <p style="color: #666; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+            我们是一支充满热情的学生开发团队，致力于为校园生活提供便利。通过技术的力量，
+            我们希望帮助每一件遗失的物品都能找到回家的路，让校园充满温暖和互助的氛围。
+            感谢每一位使用我们平台的同学，是你们的支持让这个项目更有意义。
+        </p>
+        
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/" class="btn">返回首页</a>
+            <a href="/register" class="btn btn-secondary">开始使用</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleFAQ(id) {
+        const content = document.getElementById(`faq-content-${id}`);
+        const icon = document.getElementById(`faq-icon-${id}`);
+        
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            icon.textContent = '-';
+        } else {
+            content.style.display = 'none';
+            icon.textContent = '+';
+        }
+    }
+    
+    // 添加一些交互效果
+    document.addEventListener('DOMContentLoaded', function() {
+        // 为FAQ项添加hover效果
+        const faqHeaders = document.querySelectorAll('[onclick^="toggleFAQ"]');
+        faqHeaders.forEach(header => {
+            header.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#e9ecef';
+            });
+            header.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+        });
+    });
+</script>
+{% endblock %}
