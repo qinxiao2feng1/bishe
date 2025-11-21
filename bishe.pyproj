@@ -47,9 +47,9 @@
     <Folder Include="app\__pycache__\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".env" />
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
-    <Content Include="app\lost_found.db" />
     <Content Include="app\static\content\bootstrap.css" />
     <Content Include="app\static\content\bootstrap.min.css" />
     <Content Include="app\static\content\site.css" />

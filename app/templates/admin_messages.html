@@ -1,0 +1,38 @@
+﻿{% extends "base.html" %}
+{% block title %}관리자 - 사용자 문의 관리{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">📩 사용자 피드백 관리 (Feedback Messages)</h2>
+
+    <!-- 관리자 페이지로 돌아가기 -->
+    <a href="/admin/dashboard" class="btn btn-secondary mb-3">← 관리자 홈으로 돌아가기</a>
+
+    {% if messages|length == 0 %}
+        <div class="alert alert-info">현재 새로운 문의가 없습니다.</div>
+    {% else %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>이름</th>
+                    <th>Email</th>
+                    <th>문의 내용</th>
+                    <th>작성 날짜</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in messages %}
+                <tr>
+                    <td>{{ m.id }}</td>
+                    <td>{{ m.name }}</td>
+                    <td>{{ m.email }}</td>
+                    <td>{{ m.message }}</td>
+                    <td>{{ m.created_at.strftime("%Y-%m-%d %H:%M") if m.created_at else "" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+﻿{% extends "layout.html" %}
+{% block body %}
+
+<h3 class="text-center mb-4">📦 물품 관리</h3>
+
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <a href="/admin/items?type=all" class="btn btn-secondary btn-sm">전체</a>
+        <a href="/admin/items?type=lost" class="btn btn-warning btn-sm">분실물</a>
+        <a href="/admin/items?type=found" class="btn btn-success btn-sm">습득물</a>
+    </div>
+</div>
+
+{% if type == "all" %}
+    <h4>🟡 분실물</h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>등록일</th>
+            <th>작업</th>
+        </tr>
+        {% for item in items.lost %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.user.username }}</td>
+            <td>{{ item.date }}</td>
+            <td>
+                <button class="btn btn-danger btn-sm"
+                        onclick="deleteItem('lost', {{ item.id }})">삭제</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h4 class="mt-4">🟢 습득물</h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>등록일</th>
+            <th>작업</th>
+        </tr>
+        {% for item in items.found %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.user.username }}</td>
+            <td>{{ item.date }}</td>
+            <td>
+                <button class="btn btn-danger btn-sm"
+                        onclick="deleteItem('found', {{ item.id }})">삭제</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>등록일</th>
+        <th>작업</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.user.username }}</td>
+        <td>{{ item.date }}</td>
+        <td>
+            <button class="btn btn-danger btn-sm"
+                    onclick="deleteItem('{{ type }}', {{ item.id }})">삭제</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<script>
+function deleteItem(type, id) {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+
+    fetch(`/admin/items/${type}/${id}/delete`, {
+        method: "POST"
+    }).then(res => res.json())
+      .then(data => {
+        if (data.ok) location.reload();
+        else alert("삭제 실패");
+    });
+}
+</script>
+
+{% endblock %}

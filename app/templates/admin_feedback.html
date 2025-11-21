@@ -1,0 +1,24 @@
+﻿{% extends "admin_dashboard.html" %}
+{% block content %}
+<h3>📩 사용자 의견 목록</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>내용</th>
+        <th>날짜</th>
+    </tr>
+
+    {% for fb in feedbacks %}
+    <tr>
+        <td>{{ fb.id }}</td>
+        <td>{{ fb.name }}</td>
+        <td>{{ fb.email }}</td>
+        <td>{{ fb.message }}</td>
+        <td>{{ fb.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

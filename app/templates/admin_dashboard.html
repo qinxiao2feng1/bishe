@@ -1,0 +1,57 @@
+﻿{% extends "layout.html" %}
+{% block body %}
+
+<h3 class="text-center mt-3">📊 관리자 대시보드</h3>
+
+<div class="text-center mt-4">
+    <a href="/admin/users" class="btn btn-primary btn-lg">사용자 관리</a>
+    <a href="/admin/items" class="btn btn-secondary btn-lg">물품 관리</a>
+
+    <!-- ⭐ 新增：查看用户意见留言 -->
+    <a href="/admin/messages" class="btn btn-warning btn-lg">
+        📬 의견 / 문의 보기
+    </a>
+</div>
+
+<div class="row text-center mt-4">
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+            <h4>총 사용자</h4>
+            <p class="display-6">{{ total_users }}</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+            <h4>분실물 수</h4>
+            <p class="display-6">{{ total_lost }}</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+            <h4>습득물 수</h4>
+            <p class="display-6">{{ total_found }}</p>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-5">🧑‍💻 최근 가입 사용자</h4>
+
+<table class="table table-striped mt-3">
+    <tr>
+        <th>ID</th>
+        <th>아이디</th>
+        <th>관리자 여부</th>
+    </tr>
+
+    {% for u in recent_users %}
+    <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ "예" if u.is_admin else "아니오" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

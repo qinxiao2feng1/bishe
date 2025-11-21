@@ -1,0 +1,46 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="card mx-auto" style="max-width: 420px;">
+    <div class="card-body">
+        <h3 class="text-center mb-3">🔐 관리자 로그인</h3>
+
+        <form id="adminLoginForm">
+            <label>아이디</label>
+            <input type="text" name="username" class="form-control" required>
+
+            <label class="mt-2">비밀번호</label>
+            <input type="password" name="password" class="form-control" required>
+
+            <button class="btn btn-warning mt-3 w-100">관리자 로그인</button>
+        </form>
+
+        <p id="msg" class="text-danger text-center mt-3"></p>
+    </div>
+</div>
+
+<script>
+document.getElementById("adminLoginForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    let data = {
+        username: this.username.value,
+        password: this.password.value
+    };
+
+    let res = await fetch("/auth/api/admin/login", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+    });
+
+    let result = await res.json();
+    if (res.ok) {
+        alert("관리자 로그인 성공!");
+        window.location.href = "/admin/dashboard";
+    } else {
+        document.getElementById("msg").innerText = result.error;
+    }
+});
+</script>
+{% endblock %}

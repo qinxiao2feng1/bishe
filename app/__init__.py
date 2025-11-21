@@ -1,36 +1,41 @@
 ﻿# app/__init__.py
-# ==========================================
-# 🔧 Flask 앱 초기화
-# ==========================================
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# ✅ 전역에서 딱 1번만 생성
 db = SQLAlchemy()
-
 
 def create_app():
     app = Flask(__name__)
 
-    # 기본 설정
+    # ====== 基本配置 ======
     app.config["SECRET_KEY"] = "your-secret-key"
+    app.config["SESSION_PERMANENT"] = False
 
-    # DB 경로 (프로젝트 안에 lostfound.db 생성)
     db_path = os.path.join(app.root_path, "lostfound.db")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    # ✅ 이 app 과 db 를 연결
+    # 初始化数据库
     db.init_app(app)
 
-    # Blueprint 등록
-    from .views import views
-    app.register_blueprint(views)
+    # ====== 导入蓝图（非常重要，避免循环引用）======
+    from .views import views                 # 主页/物品 CRUD
+    from .auth import auth_bp                # 登录注册
+    from .admin import admin_bp              # 管理员面板（如存在）
+    from .ai_match import ai_bp              # AI 自动匹配（API）
 
-    # 테이블 생성
+    # 导入 models（确保 SQLAlchemy 识别所有表）
+    from . import models
+
+    # ====== 注册蓝图 ======
+    app.register_blueprint(views)                     # 无前缀 → "/" 开头路由
+    app.register_blueprint(auth_bp, url_prefix="/auth")   # 所有 auth 路由自动变成 /auth/xxx
+    app.register_blueprint(admin_bp, url_prefix="/admin") # 管理后台
+    app.register_blueprint(ai_bp, url_prefix="/ai")       # AI API → /ai/xxx
+
+    # ====== 自动建表 ======
     with app.app_context():
-        from . import models   # <-- 모델을 여기서 import
         db.create_all()
 
     return app
