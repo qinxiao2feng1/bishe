@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+{% block title %}Lost &amp; Found @ Campus{% endblock %}
+
+{% block body %}
+
+
+<div class="text-center mb-4">
+    <h1 class="fw-bold mb-2">🎯 Lost &amp; Found @ Campus</h1>
+    <p class="text-muted mb-0">
+        캠퍼스 내 분실물을 쉽고 빠르게 찾아보세요!
+    </p>
+</div>
+
+
+<div class="row g-3 mb-4">
+
+    <!-- 분실물 등록 -->
+    <div class="col-12 col-md-4">
+        <div class="card lf-card-hover h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title mb-2">📝 분실물 등록</h5>
+                <p class="card-text text-muted mb-3">
+                    잃어버린 물건이 있다면<br>여기에 등록해주세요.
+                </p>
+                <a href="/register" class="btn btn-primary w-100">
+                    등록하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 검색하기 -->
+    <div class="col-12 col-md-4">
+        <div class="card lf-card-hover h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title mb-2">🔍 검색하기</h5>
+                <p class="card-text text-muted mb-3">
+                    누군가 주운 물건이<br>등록되었는지 확인하세요.
+                </p>
+                <a href="/search" class="btn btn-success w-100">
+                    검색하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI 도우미 -->
+    <div class="col-12 col-md-4">
+        <div class="card lf-card-hover h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title mb-2">🤖 AI 도우미</h5>
+                <p class="card-text text-muted mb-3">
+                    AI가 분실물 매칭과<br>검색을 도와드립니다.
+                </p>
+                <a href="/ai" class="btn btn-warning w-100">
+                    AI 이용하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="mb-2">📊 최신 분실물 요약</h5>
+        <p class="text-muted mb-3">
+            최근 등록된 데이터를 기반으로 표시됩니다.
+        </p>
+
+        <div class="row text-center">
+            <div class="col-4">
+                <div class="fw-bold fs-4">{{ stats.lost_items + stats.found_items }}</div>
+                <div class="text-muted">전체 등록 수</div>
+            </div>
+            <div class="col-4">
+                <div class="fw-bold fs-4 text-success">{{ stats.found_items }}</div>
+                <div class="text-muted">습득물 등록 수</div>
+            </div>
+            <div class="col-4">
+                <div class="fw-bold fs-4 text-danger">{{ stats.pending_items }}</div>
+                <div class="text-muted">미해결 분실물</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if items_recent and items_recent|length > 0 %}
+    <h5 class="mb-3">📚 최근 등록된 분실물 / 습득물</h5>
+    <div class="row g-3">
+        {% for item in items_recent %}
+        <div class="col-12 col-md-4">
+            <div class="card h-100 lf-card-hover">
+                {% if item.image %}
+                    <img src="{{ item.image }}"
+                         class="card-img-top"
+                         style="height: 180px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-title fw-bold">
+                        {{ item.name }}
+                        {% if item.type == "lost" %}
+                            <span class="badge bg-danger ms-1">분실</span>
+                        {% else %}
+                            <span class="badge bg-success ms-1">습득</span>
+                        {% endif %}
+                    </h6>
+                    <p class="card-text small text-muted mb-2">
+                        📍 {{ item.place }}<br>
+                        📅 {{ item.date }}<br>
+                        🏷 {{ item.category }}
+                    </p>
+                    <a href="/item/{{ item.id }}" class="btn btn-outline-primary btn-sm w-100">
+                        상세보기
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted text-center">
+        아직 등록된 항목이 없습니다.
+    </p>
+{% endif %}
+
+{% endblock %}

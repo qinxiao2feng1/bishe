@@ -1,0 +1,56 @@
+﻿{% extends "layout.html" %}
+
+{% block title %}📄 상세 정보{% endblock %}
+
+{% block body %}
+
+<h3 class="text-center mb-4">📄 분실물 / 습득물 상세 정보</h3>
+
+<div class="card shadow-sm mx-auto" style="max-width: 800px;">
+    {% if item.image %}
+        <img src="{{ item.image }}"
+             class="card-img-top"
+             style="max-height: 300px; object-fit: cover;">
+    {% endif %}
+
+    <div class="card-body">
+        <h4 class="fw-bold">
+            {{ item.name }}
+            {% if item_type == "lost" %}
+                <span class="badge bg-danger ms-1">분실</span>
+            {% else %}
+                <span class="badge bg-success ms-1">습득</span>
+            {% endif %}
+        </h4>
+
+        <p class="mt-3">
+            📍 <strong>장소:</strong> {{ item.place }}<br>
+            📅 <strong>날짜:</strong> {{ item.date }}<br>
+            🏷 <strong>카테고리:</strong> {{ item.category }}<br>
+            📞 <strong>연락처:</strong> {{ item.contact }}
+        </p>
+
+        <p class="mt-3">
+            <strong>설명:</strong><br>
+            {{ item.description or "설명 없음" }}
+        </p>
+
+        <div class="d-flex gap-2 mt-4">
+            <a href="/edit/{{ item.id }}" class="btn btn-warning flex-grow-1">
+                ✏ 수정
+            </a>
+
+            <form action="/delete/{{ item.id }}"
+                  method="POST"
+                  onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                <button class="btn btn-danger">🗑 삭제</button>
+            </form>
+
+            <a href="/search" class="btn btn-secondary">
+                🔙 목록으로
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

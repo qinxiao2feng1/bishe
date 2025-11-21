@@ -1,14 +1,19 @@
-"""
-This script runs the bishe application using a development server.
-"""
+# ======================================================
+# 🔹 runserver.py — Flask 앱 실행 스크립트
+# ======================================================
 
-from os import environ
-from bishe import app
+from app import create_app
 
-if __name__ == '__main__':
-    HOST = environ.get('SERVER_HOST', 'localhost')
-    try:
-        PORT = int(environ.get('SERVER_PORT', '5555'))
-    except ValueError:
-        PORT = 5555
-    app.run(HOST, PORT)
+# Flask 앱 생성 (팩토리 패턴)
+app = create_app()
+
+if __name__ == "__main__":
+    # --------------------------------------------------
+    # 🔸 디버그 모드 ON  
+    #    개발 중 오류 메시지를 확인하기 쉽게 하기 위함
+    # --------------------------------------------------
+    app.run(
+        host="0.0.0.0",   # 외부 접속 허용 (서버 배포 시 필수)
+        port=5555,        # 사용 포트
+        debug=True        # 개발 중에는 True / 배포 시 False
+    )

@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}📨 문의하기{% endblock %}
+
+{% block body %}
+
+<h3 class="text-center mb-4">📨 문의하기</h3>
+
+<div class="card shadow-sm mx-auto" style="max-width: 700px;">
+    <div class="card-body">
+
+        <!-- POST 요청을 보내는 문의 폼 -->
+        <form method="POST" action="/contact">
+
+            <!-- 이름 -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">이름</label>
+                <input type="text"
+                       name="name"
+                       class="form-control"
+                       placeholder="이름을 입력하세요">
+            </div>
+
+            <!-- 이메일 -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">이메일</label>
+                <input type="email"
+                       name="email"
+                       class="form-control"
+                       placeholder="example@mail.com">
+            </div>
+
+            <!-- 메시지 -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">문의 내용</label>
+                <textarea name="message"
+                          class="form-control"
+                          rows="4"
+                          placeholder="문의 내용을 입력하세요"></textarea>
+            </div>
+
+            <!-- 제출 버튼 -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    📩 문의 보내기
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

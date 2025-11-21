@@ -1,0 +1,50 @@
+﻿{% extends "layout.html" %}
+
+{% block title %}🤖 AI 분실물 도우미{% endblock %}
+
+{% block body %}
+
+<h3 class="text-center mb-4">🤖 AI 분실물 자동 검색</h3>
+
+<div class="card shadow-sm mx-auto" style="max-width: 800px;">
+    <div class="card-body">
+
+        <p class="text-muted">
+            원하는 내용을 AI에게 질문해보세요. <br>
+            예) “지갑을 잃어버렸는데 어디서 찾을 수 있을까요?”
+        </p>
+
+        <!-- AI 질문 폼 -->
+        <form method="POST" action="/ai">
+            <div class="mb-3">
+                <label class="form-label fw-bold">질문 입력</label>
+                <textarea name="question"
+                          required
+                          class="form-control"
+                          rows="3"
+                          placeholder="AI에게 질문을 입력하세요">{{ request.form.get("question", "") }}</textarea>
+            </div>
+
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    🤖 AI 검색하기
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- AI 답변 표시 -->
+{% if ai_answer %}
+<div class="card shadow-sm mx-auto mt-4" style="max-width: 800px;">
+    <div class="card-body">
+        <h5 class="fw-bold mb-2">💡 AI 응답</h5>
+        <div class="alert alert-info" style="white-space: pre-wrap;">
+            {{ ai_answer }}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

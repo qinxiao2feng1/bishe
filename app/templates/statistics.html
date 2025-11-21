@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+
+{% block title %}📊 통계 페이지{% endblock %}
+
+{% block body %}
+
+<h3 class="text-center mb-4">📊 분실물 / 습득물 통계</h3>
+
+<div class="row">
+
+    <!-- ======================================= -->
+    <!-- 🔹 전체 요약 카드 -->
+    <!-- ======================================= -->
+    <div class="col-md-4">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h5>📦 총 분실물</h5>
+                <h2 class="text-primary">{{ lost_count }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h5>📥 총 습득물</h5>
+                <h2 class="text-success">{{ found_count }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h5>🔍 (옵션) 자동 매칭 수</h5>
+                <h2 class="text-warning">{{ matched_count }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<hr class="my-5">
+
+<!-- ======================================= -->
+<!-- 🔹 카테고리별 통계 그래프 -->
+<!-- ======================================= -->
+<h4 class="text-center mb-3">📌 카테고리별 분실/습득 통계</h4>
+<canvas id="categoryChart" height="120"></canvas>
+
+<hr class="my-5">
+
+<!-- ======================================= -->
+<!-- 🔹 장소별 통계 (막대 그래프) -->
+<!-- ======================================= -->
+<h4 class="text-center mb-3">📍 장소별 분실/습득 통계</h4>
+<canvas id="locationChart" height="120"></canvas>
+
+
+<!-- ======================================= -->
+<!-- 📌 Chart.js 라이브러리 -->
+<!-- ======================================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // ============================================
+    // 🔹 카테고리별 그래프 데이터 (views.py에서 전달됨)
+    // ============================================
+    const lost_labels = {{ lost_labels | safe }};
+    const lost_values = {{ lost_values | safe }};
+    const found_values = {{ found_values | safe }};
+
+    const ctx1 = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: lost_labels,
+            datasets: [
+                {
+                    label: '분실물',
+                    data: lost_values,
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                },
+                {
+                    label: '습득물',
+                    data: found_values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                }
+            ]
+        }
+    });
+
+
+    // ============================================
+    // 🔹 장소 통계 데이터
+    // ============================================
+    const locationStats = {{ location_stats | safe }};
+
+    const locationLabels = Object.keys(locationStats);
+    const locationLost = locationLabels.map(k => locationStats[k].lost);
+    const locationFound = locationLabels.map(k => locationStats[k].found);
+
+    const ctx2 = document.getElementById('locationChart').getContext('2d');
+
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: locationLabels,
+            datasets: [
+                {
+                    label: '분실물',
+                    data: locationLost,
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)'
+                },
+                {
+                    label: '습득물',
+                    data: locationFound,
+                    backgroundColor: 'rgba(255, 206, 86, 0.7)'
+                }
+            ]
+        }
+    });
+
+</script>
+
+{% endblock %}

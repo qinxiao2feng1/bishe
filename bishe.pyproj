@@ -28,49 +28,66 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="bishe\models.py">
+    <Compile Include="app\models.py" />
+    <Compile Include="app\utils.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app\views.py" />
+    <Compile Include="app\__init__.py" />
     <Compile Include="runserver.py" />
-    <Compile Include="bishe\__init__.py" />
-    <Compile Include="bishe\views.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bishe\" />
-    <Folder Include="bishe\static\" />
-    <Folder Include="bishe\static\content\" />
-    <Folder Include="bishe\static\fonts\" />
-    <Folder Include="bishe\static\scripts\" />
-    <Folder Include="bishe\templates\" />
+    <Folder Include="app\" />
+    <Folder Include="app\static\" />
+    <Folder Include="app\static\content\" />
+    <Folder Include="app\static\fonts\" />
+    <Folder Include="app\static\uploads\" />
+    <Folder Include="app\static\scripts\" />
+    <Folder Include="app\templates\" />
+    <Folder Include="app\__pycache__\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
+    <Content Include="app\lost_found.db" />
+    <Content Include="app\static\content\bootstrap.css" />
+    <Content Include="app\static\content\bootstrap.min.css" />
+    <Content Include="app\static\content\site.css" />
+    <Content Include="app\static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\static\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="app\static\scripts\_references.js" />
+    <Content Include="app\static\scripts\bootstrap.js" />
+    <Content Include="app\static\scripts\bootstrap.min.js" />
+    <None Include="app\static\scripts\jquery.validate-vsdoc.js" />
+    <None Include="app\static\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="app\static\scripts\jquery-1.10.2.js" />
+    <Content Include="app\static\scripts\jquery-1.10.2.min.js" />
+    <Content Include="app\static\scripts\jquery-1.10.2.min.map" />
+    <Content Include="app\static\scripts\jquery.validate.js" />
+    <Content Include="app\static\scripts\jquery.validate.min.js" />
+    <Content Include="app\static\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="app\static\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\static\scripts\modernizr-2.6.2.js" />
+    <Content Include="app\static\scripts\respond.js" />
+    <Content Include="app\static\scripts\respond.min.js" />
+    <Content Include="app\templates\about.html" />
+    <Content Include="app\templates\ai_search.html" />
+    <Content Include="app\templates\base.html" />
+    <Content Include="app\templates\contact.html" />
+    <Content Include="app\templates\edit_item.html" />
+    <Content Include="app\templates\home.html" />
+    <Content Include="app\templates\index.html" />
+    <Content Include="app\templates\item_detail.html" />
+    <Content Include="app\templates\layout.html" />
+    <Content Include="app\templates\register.html" />
+    <Content Include="app\templates\search.html" />
+    <Content Include="app\templates\statistics.html" />
+    <Content Include="app\__pycache__\models.cpython-313.pyc" />
+    <Content Include="app\__pycache__\views.cpython-313.pyc" />
+    <Content Include="app\__pycache__\__init__.cpython-313.pyc" />
     <Content Include="requirements.txt" />
-    <Content Include="bishe\static\content\bootstrap.css" />
-    <Content Include="bishe\static\content\bootstrap.min.css" />
-    <Content Include="bishe\static\content\site.css" />
-    <Content Include="bishe\static\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="bishe\static\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="bishe\static\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="bishe\static\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="bishe\static\scripts\bootstrap.js" />
-    <Content Include="bishe\static\scripts\bootstrap.min.js" />
-    <Content Include="bishe\static\scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="bishe\static\scripts\jquery-1.10.2.js" />
-    <Content Include="bishe\static\scripts\jquery-1.10.2.min.js" />
-    <Content Include="bishe\static\scripts\jquery-1.10.2.min.map" />
-    <Content Include="bishe\static\scripts\jquery.validate-vsdoc.js" />
-    <Content Include="bishe\static\scripts\jquery.validate.js" />
-    <Content Include="bishe\static\scripts\jquery.validate.min.js" />
-    <Content Include="bishe\static\scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="bishe\static\scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="bishe\static\scripts\modernizr-2.6.2.js" />
-    <Content Include="bishe\static\scripts\respond.js" />
-    <Content Include="bishe\static\scripts\respond.min.js" />
-    <Content Include="bishe\static\scripts\_references.js" />
-    <Content Include="bishe\templates\about.html" />
-    <Content Include="bishe\templates\contact.html" />
-    <Content Include="bishe\templates\index.html" />
-    <Content Include="bishe\templates\layout.html" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

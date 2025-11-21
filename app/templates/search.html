@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+
+{% block title %}🔍 분실물 검색{% endblock %}
+
+{% block body %}
+
+<h3 class="text-center mb-4">🔍 분실물 / 습득물 검색</h3>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" action="/search">
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label">검색 키워드</label>
+                    <input type="text" class="form-control"
+                           name="keyword"
+                           placeholder="예: 지갑, 카드, 열쇠"
+                           value="{{ request.args.get('keyword', '') }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">카테고리</label>
+                    <select class="form-select" name="category">
+                        <option value="">전체</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat }}"
+                                {% if request.args.get('category') == cat %}selected{% endif %}>
+                                {{ cat }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">장소</label>
+                    <input type="text" class="form-control"
+                           name="place"
+                           placeholder="예: 도서관, 강의실 302"
+                           value="{{ request.args.get('place', '') }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">날짜</label>
+                    <input type="date" class="form-control"
+                           name="date"
+                           value="{{ request.args.get('date', '') }}">
+                </div>
+
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-4">
+                    🔍 검색하기
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr class="my-4">
+
+{% if results is not none %}
+    {% if results|length == 0 %}
+        <p class="text-center text-muted">검색 결과가 없습니다.</p>
+    {% else %}
+        <h5 class="mb-3">📄 검색 결과 (총 {{ results|length }}건)</h5>
+
+        <div class="row">
+            {% for item in results %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm position-relative">
+
+                    {% if item.image %}
+                        <img src="{{ item.image }}"
+                             class="card-img-top"
+                             style="height: 200px; object-fit: cover;">
+                    {% endif %}
+
+                    <div class="position-absolute top-0 end-0 p-2 d-flex gap-2">
+                        <a href="/edit/{{ item.id }}" class="btn btn-warning btn-sm">
+                            ✏ 수정
+                        </a>
+                        <form action="/delete/{{ item.id }}"
+                              method="POST"
+                              onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                            <button class="btn btn-danger btn-sm">🗑 삭제</button>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">
+                            {{ item.name }}
+                            {% if item.type == 'lost' %}
+                                <span class="badge bg-danger ms-1">분실</span>
+                            {% else %}
+                                <span class="badge bg-success ms-1">습득</span>
+                            {% endif %}
+                        </h5>
+                        <p class="card-text mb-2">
+                            📍 장소: {{ item.place }}<br>
+                            📅 날짜: {{ item.date }}<br>
+                            🏷 카테고리: {{ item.category }}
+                        </p>
+                        <a href="/item/{{ item.id }}" class="btn btn-outline-primary w-100">
+                            상세보기
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% else %}
+    <p class="text-center text-muted">
+        검색 조건을 입력한 후, <strong>검색하기</strong> 버튼을 눌러주세요.
+    </p>
+{% endif %}
+
+{% endblock %}
